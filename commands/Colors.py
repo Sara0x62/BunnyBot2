@@ -121,22 +121,24 @@ class Colors(commands.Cog, name="Colors"):
             
             return
         else:
-            logs.info(f"Unable to get color role, attempting to make new color role")
+            logs.info(f"set_color - Unable to get color role, attempting to make new color role")
             
             color_role = await guild.create_role(name=role_name, color=color)
             
-            logs.info(f"Getting bot's highest role position - bot_id: {self.bot.user.id}")
+            logs.info(f"set_color - Getting bot's highest role position - bot_id: {self.bot.user.id}")
             top_pos = guild.get_member(self.bot.user.id)
             
             # Make the top position 1 position under the highest role the bot has
             top_pos = top_pos.top_role.position - 1 
             
-            logs.info(f"Top position for bot is {top_pos + 1} - placing color roles at position {top_pos}")
+            logs.info(f"set_color - Top position for bot is {top_pos + 1} - placing color roles at position {top_pos}")
             
             # Fix color role position
+            logs.info(f"set_color - fixing new role position")
             await color_role.edit(position=top_pos)
             
             # Add role to user
+            logs.info(f"Adding new role to user: {user.name}")
             await user.add_roles(color_role)
             
     
