@@ -3,3 +3,4 @@ config.ini
 .venv
 .venv/*
 commands/__pycache__
+run.sh

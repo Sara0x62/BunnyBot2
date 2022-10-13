@@ -29,6 +29,8 @@ class Colors(commands.Cog, name="Colors"):
     @group.command(name='set-rgb', description='Set a display color for yourself using rgb values')
     async def set_rgb(self, interaction: discord.Interaction, r: app_commands.Range[int, 0, 255], g: app_commands.Range[int, 0, 255], b: app_commands.Range[int, 0, 255]):
         
+        logs.info(f"set_rgb - called by {interaction.user.name} | [ r: {r}, g: {g}, b: {b} ]")
+        
         color = discord.Color.from_rgb(r, g, b)
         
         await interaction.response.defer(ephemeral=True)
@@ -42,6 +44,7 @@ class Colors(commands.Cog, name="Colors"):
     async def set_hex(self, interaction: discord.Interaction, hex_code:str):
         
         try:
+            logs.info(f"set_hex - called by: {interaction.user.name} hex value: {hex_code}")
             color = discord.Color.from_str(hex_code)
             
             await interaction.response.defer(ephemeral=True)
@@ -59,13 +62,16 @@ class Colors(commands.Cog, name="Colors"):
     async def show(self, interaction: discord.Interaction, target: typing.Optional[discord.Member]):
         
         if target:
+            logs.info(f"show - Got optional argument, target: {target.name}")
             role = await self.get_role(target)
             username = target.name
         else:
+            logs.info(f"show - No optional argument, target: {interaction.user.name}")
             role = await self.get_role(interaction.user)
             username = interaction.user.name
             
         if role is not None:
+            logs.info(f"show - got a role, colors are [R: {role.color.r}, G: {role.color.g}, B: {role.color.b}]")
             await interaction.response.send_message(
                 f"Colors for {username}\n"
                 f"R: {role.color.r}\n"
@@ -73,16 +79,19 @@ class Colors(commands.Cog, name="Colors"):
                 f"B: {role.color.b}\n"
                 f"\nHex: {hex(role.color.value)}\n")
         else:
+            logs.info(f"show - No color role found for {username}")
             await interaction.response.send_message(f"Did not find a color role on {username}", ephemeral=True)
     
     
     # color steal
     @group.command(name='steal', description='Steal the display color of someone else')
-    async def get(self, interaction: discord.Interaction, target: discord.Member):
+    async def steal(self, interaction: discord.Interaction, target: discord.Member):
+        logs.info(f"steal - User: {interaction.user.name} is trying to steal the display color of {target.name}")
         
         role = await self.get_role(target)
         
         if role is None:
+            logs.info("steal - Unabled to steal color, role not found on {target.name}")
             await interaction.response.send_message(f"Could not find a role on {target.name}", ephemeral=True)
             return
         
@@ -93,9 +102,14 @@ class Colors(commands.Cog, name="Colors"):
         await self.set_color(color, interaction.user, interaction.guild)
         
         await interaction.followup.send(f"Successfully stole colors from {target.name}", ephemeral=False)
+        
+        logs.info("Successfully stolen colors from {target.name}")
     
     # Tries to set the role color, makes it if role does not exist
     async def set_color(self, color: discord.Color, user: discord.Member, guild: discord.Guild):
+        
+        logs.info(f"set_color - Setting color for user: {user.name}")
+        
         # Check if role exists for user
         role_name = f"{user.name}-{self.color_role_postfix}"
         color_role = await self.get_role(user, role_name)
@@ -132,10 +146,14 @@ class Colors(commands.Cog, name="Colors"):
         if user_role is None:
             user_role = f"{user.name}-{self.color_role_postfix}"
         
+        logs.info(f"get_role - trying to find role for user: {user.name}")
+        
         for role in user.roles:
             if role.name == user_role:
+                logs.info(f"get_role - found role for user: {role.name}")
                 return role
             
+        logs.info(f"get_role - no role found for user: {user.name}")
         return None
     
     
