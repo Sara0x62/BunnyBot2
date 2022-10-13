@@ -1,3 +1,5 @@
+.gitignore
 config.ini
 .venv
 .venv/*
+commands/__pycache__
