@@ -19,6 +19,11 @@ class Colors(commands.Cog, name="Colors"):
         
         # self.color_role_prefix = "color-"
         self.color_role_postfix = "color"  # eg. "user-color"
+        
+        # Do we want to make sure the roles have the highest possible position?
+        # This is mainly for if the discord already has other color roles we want our color rules to be above it if possible.
+        self.ROLES_AT_TOP = True
+        
         logs.info("Colors initialized...")
     
     # Define group command 'color'
@@ -128,17 +133,18 @@ class Colors(commands.Cog, name="Colors"):
             color_role = await guild.create_role(name=role_name, color=color)
             logs.info("set_color - Successfully created new color role")
             
-            logs.info(f"set_color - Getting bot's highest role position - bot_id: {self.bot.user.id}")
-            top_pos = guild.get_member(self.bot.user.id)
-            
-            # Make the top position 1 position under the highest role the bot has
-            top_pos = top_pos.top_role.position - 1 
-            
-            logs.info(f"set_color - Top position for bot is {top_pos + 1} - placing color roles at position {top_pos}")
-            
-            # Fix color role position
-            logs.info(f"set_color - fixing new role position")
-            await color_role.edit(position=top_pos)
+            if self.ROLES_AT_TOP:
+                logs.info(f"set_color - Getting bot's highest role position - bot_id: {self.bot.user.id}")
+                top_pos = guild.get_member(self.bot.user.id)
+                
+                # Make the top position 1 position under the highest role the bot has
+                top_pos = top_pos.top_role.position - 1 
+                
+                logs.info(f"set_color - Top position for bot is {top_pos + 1} - placing color roles at position {top_pos}")
+                
+                # Fix color role position
+                logs.info(f"set_color - fixing new role position")
+                await color_role.edit(position=top_pos)
             
             # Add role to user
             logs.info(f"set_color - Adding new role to user: {user.name}")
