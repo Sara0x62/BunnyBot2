@@ -54,9 +54,9 @@ class Colors(commands.Cog, name="Colors"):
             await interaction.response.send_message("Unable to convert given hex to color", ephemeral=True)
     
     
-    # color get
-    @group.command(name='get', description='Get the display color for yourself or someone else')
-    async def get(self, interaction: discord.Interaction, target: typing.Optional[discord.Member]):
+    # color show
+    @group.command(name='show', description='Shows the color values of yourself or someone else')
+    async def show(self, interaction: discord.Interaction, target: typing.Optional[discord.Member]):
         
         if target:
             role = await self.get_role(target)
