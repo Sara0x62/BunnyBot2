@@ -37,6 +37,7 @@ class Colors(commands.Cog, name="Colors"):
         
         await self.set_color(color=color, user=interaction.user, guild=interaction.guild)
         
+        logs.info(f"set_rgb - color set for user: {interaction.user.name}")
         await interaction.followup.send("Color set!")
         
     # color set - hex values
@@ -54,6 +55,7 @@ class Colors(commands.Cog, name="Colors"):
             await interaction.followup.send("Color set!")
             
         except ValueError:
+            logs.info(f"set_hex - ValueError: {interaction.user.name} hex value: {hex_code}")
             await interaction.response.send_message("Unable to convert given hex to color", ephemeral=True)
     
     
@@ -103,7 +105,7 @@ class Colors(commands.Cog, name="Colors"):
         
         await interaction.followup.send(f"Successfully stole colors from {target.name}", ephemeral=False)
         
-        logs.info("Successfully stolen colors from {target.name}")
+        logs.info("steal - Successfully stolen colors from {target.name}")
     
     # Tries to set the role color, makes it if role does not exist
     async def set_color(self, color: discord.Color, user: discord.Member, guild: discord.Guild):
@@ -124,6 +126,7 @@ class Colors(commands.Cog, name="Colors"):
             logs.info(f"set_color - Unable to get color role, attempting to make new color role")
             
             color_role = await guild.create_role(name=role_name, color=color)
+            logs.info("set_color - Successfully created new color role")
             
             logs.info(f"set_color - Getting bot's highest role position - bot_id: {self.bot.user.id}")
             top_pos = guild.get_member(self.bot.user.id)
@@ -138,7 +141,7 @@ class Colors(commands.Cog, name="Colors"):
             await color_role.edit(position=top_pos)
             
             # Add role to user
-            logs.info(f"Adding new role to user: {user.name}")
+            logs.info(f"set_color - Adding new role to user: {user.name}")
             await user.add_roles(color_role)
             
     
