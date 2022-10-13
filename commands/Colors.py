@@ -112,6 +112,11 @@ class Colors(commands.Cog, name="Colors"):
         
         logs.info("steal - Successfully stolen colors from {target.name}")
     
+        """
+            === ^ COLOR COMMANDS UP ^ ===
+            
+            ====== COLOR HANDLERS  ======
+        """
     # Tries to set the role color, makes it if role does not exist
     async def set_color(self, color: discord.Color, user: discord.Member, guild: discord.Guild):
         
