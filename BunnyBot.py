@@ -34,15 +34,22 @@ class BunnyBot(commands.Bot):
         
         n = 0
         
+        logs.info("=== Loading extensions ===")
+        
         for file in os.listdir('commands'):
             f = os.path.join('commands', file)
             
+            
             if os.path.isfile(f):
                 filen = os.path.splitext(file)[0]
-                logs.info(f"Loading extension.. - {filen}")
-                await bot.load_extension(f"commands.{filen}")
-                n += 1
+                
+                if filen != "__template__":     # Dont need to load our template
+                    # logs.info(f"Loading extension.. - {filen}")
+                    await bot.load_extension(f"commands.{filen}")
+                    n += 1
+                
         
+        logs.info("=== Done loading extensions ===")
         logs.info(f"Bot loaded {n} extensions...")
         logs.info(f"Syncing commands...")
 

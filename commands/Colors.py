@@ -9,7 +9,6 @@ import logging
 logs = logging.getLogger("discord").getChild("Colors")
 logs.name = "BunnyBot.commands.Colors"
 logs.setLevel(logging.INFO)
-logs.name = "BunnyBot.commands.Colors"
 
 class Colors(commands.Cog, name="Colors"):
     
