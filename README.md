@@ -13,14 +13,16 @@ Do note; these files have to be a .py file and nesting more folders inside the '
 
 
 ### Configuration
-To have this bot run locally simply use the example config to make a "config.ini" file
-Keep it inside the BunnyBot folder, you might to check which Token and Client ID it's loading in "BunnyBot.py"
+To have this bot run locally simply use the example config to make a "config.ini" file.
+
+Keep it inside the BunnyBot folder, you might have to check which Token and Client ID it's loading in "BunnyBot.py".
 This is located near the start of the file at the `# Loading Config`
 
 
 ### gifs folder
-This is to store any gifs such as the "steal" gif, used with the "color steal" command
-any file in here should be easily accessed (although this might not be very "cross-platform right now, due to lack of testing on anything besides linux)
+This is to store any gifs such as the "steal" gif, used with the "color steal" command.
+
+Any file in here should be easily accessed (although this might not be very "cross-platform right now, due to lack of testing on anything besides linux)
 
 It works simple like this because it technically runs from the folder "BunnyBot" and not "BunnyBot/commands";
 example;
