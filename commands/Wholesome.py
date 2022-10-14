@@ -18,7 +18,7 @@ class Wholesome(commands.Cog, name="Wholesome"):
     def __init__(self, bot:commands.Bot) -> None:
         self.bot = bot
         
-        logs.info("Wholesome ready...")
+        logs.info("Wholesome ready.")
     
     # Command groups
     group = app_commands.Group(name="send", description="Send a message/hug/headpat to given user")
@@ -56,8 +56,10 @@ class Wholesome(commands.Cog, name="Wholesome"):
         
         # If no option is given, random.choice will be used instead
         if option is None:
+            logs.info(f"call_cute - randomly selected a message")
             message = random.choice(messages)
         else:
+            logs.info(f"call_cute - user selected a message")
             message = messages[option]
             
         # Let the command user know
@@ -65,6 +67,8 @@ class Wholesome(commands.Cog, name="Wholesome"):
         
         # Send message to the channel the command was called from
         await interaction.channel.send(message)
+        
+        logs.info(f"call_cute - commpleted - user: {interaction.user.name} | target: {user.name}")
     
     # send hug {user}
     @group.command(name="hug", description="Gives the user a hug")
@@ -73,11 +77,14 @@ class Wholesome(commands.Cog, name="Wholesome"):
         
         emote = discord.utils.get(interaction.guild.emojis, name='MochaHug')
         if emote is None:
+            logs.info("give_hug - No hug emote found, trying to use default")
             emote = "🫂"
             
         await interaction.response.send_message(f"Sending {user.name} a hug", ephemeral=hidden)
         
         await interaction.channel.send(f"*hugs* {user.mention} {emote}")
+        
+        logs.info(f"give_hug - {interaction.user.name} sent a hug to {user.name}")
     
     # send headpat {user}
     @group.command(name="headpat", description="Gives the user a headpat")
@@ -86,11 +93,14 @@ class Wholesome(commands.Cog, name="Wholesome"):
     
         emote = discord.utils.get(interaction.guild.emojis, name='headpats')
         if emote is None:
+            logs.info("headpat - No headpat emoji found, setting empty string.")
             emote = ""
             
         await interaction.response.send_message(f"Sending headpats to {user.name}", ephemeral=hidden)
         
         await interaction.channel.send(f"*headpats* {user.mention} {emote}")
+        
+        logs.info(f"headpat - {interaction.user.name} sent a headpats to {user.name}")
     
 
 # == SETUP ==    
