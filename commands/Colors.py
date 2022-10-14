@@ -13,7 +13,6 @@ logs.setLevel(logging.INFO)
 class Colors(commands.Cog, name="Colors"):
     
     def __init__(self, bot: commands.Bot) -> None:
-        logs.info("Initializing Colors")
         self.bot = bot
         
         # self.color_role_prefix = "color-"
@@ -23,7 +22,7 @@ class Colors(commands.Cog, name="Colors"):
         # This is mainly for if the discord already has other color roles we want our color rules to be above it if possible.
         self.ROLES_AT_TOP = True
         
-        logs.info("Colors initialized...")
+        logs.info("Colors ready...")
     
     # Define group command 'color'
     group = app_commands.Group(name="color", description="Color role commands")
@@ -103,13 +102,18 @@ class Colors(commands.Cog, name="Colors"):
         
         color = role.color
         
-        await interaction.response.defer(ephemeral=True)
+        file = discord.File("gifs/steal.gif")
+        
+        await interaction.response.defer(ephemeral=False)
         
         await self.set_color(color, interaction.user, interaction.guild)
         
-        await interaction.followup.send(f"Successfully stole colors from {target.name}", ephemeral=False)
+        if file:
+            await interaction.followup.send(f"Successfully stole colors from {target.name}", file=file, ephemeral=False)
+        else:
+            await interaction.followup.send(f"Successfully stole colors from {target.name}", ephemeral=False)
         
-        logs.info("steal - Successfully stolen colors from {target.name}")
+        logs.info(f"steal - Successfully stolen colors from {target.name}")
     
         """
             === ^ COLOR COMMANDS UP ^ ===

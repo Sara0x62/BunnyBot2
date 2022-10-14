@@ -15,8 +15,8 @@ logs.info("Logger ready.")
 # Load config
 config = configparser.ConfigParser()
 config.read('config.ini')
-secret = config['BOT']['TOKEN2']
-cid = config['BOT']['CLIENT_ID2']
+secret = config['BOT']['TOKEN']
+cid = config['BOT']['CLIENT_ID']
 logs.info("Config loaded")
 
 class BunnyBot(commands.Bot):

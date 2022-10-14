@@ -16,11 +16,9 @@ logs.setLevel(logging.INFO)
 class Wholesome(commands.Cog, name="Wholesome"):
     
     def __init__(self, bot:commands.Bot) -> None:
-        logs.info("Initializing Wholesome...")
-        
         self.bot = bot
         
-        logs.info("Wholesome initialized")
+        logs.info("Wholesome ready...")
     
     # Command groups
     group = app_commands.Group(name="send", description="Send a message/hug/headpat to given user")
@@ -77,22 +75,22 @@ class Wholesome(commands.Cog, name="Wholesome"):
         if emote is None:
             emote = "🫂"
             
-        await interaction.response.send_message("Sending {user.name} a hug", ephemeral=hidden)
+        await interaction.response.send_message(f"Sending {user.name} a hug", ephemeral=hidden)
         
         await interaction.channel.send(f"*hugs* {user.mention} {emote}")
     
     # send headpat {user}
     @group.command(name="headpat", description="Gives the user a headpat")
     async def headpat(self, interaction:discord.Interaction, 
-        user:discord.Member, hidden:typing.Optional[bool]):
+        user:discord.Member, hidden:typing.Optional[bool] = True):
     
         emote = discord.utils.get(interaction.guild.emojis, name='headpats')
         if emote is None:
             emote = ""
             
-        await interaction.response.send_message(f"Sending headpats to {user.name}")
+        await interaction.response.send_message(f"Sending headpats to {user.name}", ephemeral=hidden)
         
-        await interaction.channel.send("*headpats* {user.mention} {emote}")
+        await interaction.channel.send(f"*headpats* {user.mention} {emote}")
     
 
 # == SETUP ==    
