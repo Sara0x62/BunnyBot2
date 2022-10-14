@@ -28,7 +28,7 @@ It works simple like this because it technically runs from the folder "BunnyBot"
 example;
 ```python
 my_file = discord.File("gifs/steal.gif")
-await interaction.response.send("optional, extra text message", file=my_file)
+await interaction.response.send_message("optional, extra text message", file=my_file)
 ```
 
 
