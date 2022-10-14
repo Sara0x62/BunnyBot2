@@ -2,5 +2,6 @@
 config.ini
 .venv
 .venv/*
-commands/__pycache__/
+commands/__pycache__
+commands/__pycache__/*
 run.sh
