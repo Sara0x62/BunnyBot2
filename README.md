@@ -1,6 +1,7 @@
 # BunnyBot
 BunnyBot is a discord bot that runs on the discordpy library - docs are located here: https://discordpy.readthedocs.io/en/stable/
 
+
 ### Easily extendable
 It uses the "discord.Cog" system so you can easily add more commands.
 BunnyBot.py automatically loads any file it finds in the 'commands' folder as an extension (except our template of course)
@@ -9,6 +10,12 @@ The template can be used to quickstart a new command group.
 You will want to make a new file inside the commands folder 'anything.py'.
 Then do a simple copy-paste from the template file and then replace all "__TEMPLATE__" occurences within your new file
 Do note; these files have to be a .py file and nesting more folders inside the 'commands' folder is not supported!
+
+
+### Configuration
+To have this bot run locally simply use the example config to make a "config.ini" file
+Keep it inside the BunnyBot folder, you might to check which Token and Client ID it's loading in "BunnyBot.py"
+This is located near the start of the file at the `# Loading Config`
 
 
 ### gifs folder
@@ -21,6 +28,7 @@ example;
 my_file = discord.File("gifs/steal.gif")
 await interaction.response.send("optional, extra text message", file=my_file)
 ```
+
 
 ### Logging
 Every command file has it's own logger, as seen in the template file
