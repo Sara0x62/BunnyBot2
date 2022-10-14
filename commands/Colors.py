@@ -22,7 +22,7 @@ class Colors(commands.Cog, name="Colors"):
         # This is mainly for if the discord already has other color roles we want our color rules to be above it if possible.
         self.ROLES_AT_TOP = True
         
-        logs.info("Colors ready...")
+        logs.info("Colors ready.")
     
     # Define group command 'color'
     group = app_commands.Group(name="color", description="Color role commands")
