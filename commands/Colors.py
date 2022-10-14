@@ -5,6 +5,8 @@ from discord import app_commands
 import typing
 import logging
 
+from os import path
+
 # Setup logging
 logs = logging.getLogger("discord").getChild("Colors")
 logs.name = "BunnyBot.commands.Colors"
@@ -102,7 +104,7 @@ class Colors(commands.Cog, name="Colors"):
         
         color = role.color
         
-        file = discord.File("gifs/steal.gif")
+        file = discord.File(path.join("gifs", "steal.gif"))
         
         await interaction.response.defer(ephemeral=False)
         
