@@ -5,6 +5,8 @@ import typing
 import logging
 import configparser
 
+from os import path
+
 # Get emote from config
 emote_cfg = configparser.ConfigParser()
 emote_cfg.read('emojis.ini')
@@ -27,6 +29,7 @@ class Owner(commands.Cog, name="Owner"):
 
 
     @commands.command()
+    @commands.guild_only()
     @commands.is_owner()
     async def sleep(self, ctx: commands.Context):
         logs.info(f"sleep - user: {ctx.author.name}")
@@ -34,6 +37,35 @@ class Owner(commands.Cog, name="Owner"):
         
         await self.bot.close()
         exit(0)
+
+
+    @commands.command()
+    @commands.is_owner()
+    async def extensions(self, ctx: commands.Context):
+        # Lists all current extensions
+        extensions = self.bot.extensions
+        output = "\n".join(key for key in extensions.keys())
+        await ctx.send(f"Current extensions:\n{output}")
+
+
+    @commands.command()
+    @commands.is_owner()
+    async def reload(self, ctx: commands.Context, module: str):
+        try:
+            await self.bot.reload_extension(module)
+            
+            await ctx.send(f"Extension '{module}' was reloaded successfully")
+        except commands.ExtensionNotLoaded:
+            await ctx.send("Extension has to be loaded before you can reload it.")
+        except commands.ExtensionNotFound:
+            await ctx.send("Extension not found.")
+        except commands.NoEntryPointError:
+            await ctx.send("Extension does not seem to have a setup function.")
+        except commands.ExtensionFailed:
+            await ctx.send("Extension failed, setup function had an execution error.")
+
+            
+
 
     @commands.command()
     @commands.guild_only()
@@ -83,6 +115,19 @@ class Owner(commands.Cog, name="Owner"):
                 ret += 1
                 
         await ctx.send(f"Synced the tree to {ret}/{len(guilds)}")
+    
+    
+    @commands.Cog.listener("on_command_error")
+    async def owner_error(self, ctx, error):
+        if isinstance(error, commands.NotOwner):
+            logs.warning(f"owner_error - {ctx.author} - error: {error}")
+            
+            file = discord.File(path.join("gifs", "supervisor.gif"))
+            
+            await ctx.send(file=file)
+        else:
+            logs.error("owner_error - Unknown error caught - {error}")
+            raise error
 
 
 async def setup(bot:commands.Bot):
