@@ -13,11 +13,9 @@ logs.setLevel(logging.INFO)
 class __TEMPLATE__(commands.Cog, name="__TEMPLATE__"):
     
     def __init__(self, bot:commands.Bot) -> None:
-        logs.info("Initializing __TEMPLATE__")
-        
         self.bot = bot
         
-        logs.info("__TEMPLATE__ initialized")
+        logs.info("__TEMPLATE__ ready.")
         
     
 async def setup(bot:commands.Bot):

@@ -6,6 +6,11 @@ import typing
 import logging
 
 import random
+import configparser
+
+# Get emote from config
+emote_cfg = configparser.ConfigParser()
+emote_cfg.read('emojis.ini')
 
 # Setup logger
 logs = logging.getLogger('discord').getChild("Wholesome")
@@ -15,25 +20,27 @@ logs.setLevel(logging.INFO)
 
 class Wholesome(commands.Cog, name="Wholesome"):
     
-    def __init__(self, bot:commands.Bot) -> None:
+    def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
+        
+        self.hug_emote = emote_cfg['EMOJIS']['hugs']
         
         logs.info("Wholesome ready.")
     
     # Command groups
-    group = app_commands.Group(name="send", description="Send a message/hug/headpat to given user")
+    group_send = app_commands.Group(name="send", description="Send a message/hug/headpat to given user")
     group_find = app_commands.Group(name="find", description="Finds someone in the discord")
     group_call = app_commands.Group(name="call", description="Tells a given user something")
     
     # find cutie
     @group_find.command(name="cutie", description="Finds a cutie in the discord")
-    async def find_cutie(self, interaction:discord.Interaction):
+    async def find_cutie(self, interaction: discord.Interaction):
         await interaction.response.send_message(f"Alert we found someone that is just super cute!\n"
             f"It is {interaction.user.mention} !")
     
     # call cute {user}
     @group_call.command(name="cute", description="Lets the given user know they're cute")
-    async def call_cute(self, interaction:discord.Interaction, 
+    async def call_cute(self, interaction: discord.Interaction, 
         user:discord.Member, option: typing.Optional[app_commands.Range[int, 0, 7]] = None):
         
         # If given user is the bot;
@@ -71,14 +78,11 @@ class Wholesome(commands.Cog, name="Wholesome"):
         logs.info(f"call_cute - commpleted - user: {interaction.user.name} | target: {user.name}")
     
     # send hug {user}
-    @group.command(name="hug", description="Gives the user a hug")
+    @group_send.command(name="hug", description="Gives the user a hug")
     async def give_hug(self, interaction:discord.Interaction, 
         user:discord.Member, hidden:typing.Optional[bool]=True):
         
-        emote = discord.utils.get(interaction.guild.emojis, name='MochaHug')
-        if emote is None:
-            logs.info("give_hug - No hug emote found, trying to use default")
-            emote = "🫂"
+        emote = self.hug_emote
             
         await interaction.response.send_message(f"Sending {user.name} a hug", ephemeral=hidden)
         
@@ -87,7 +91,7 @@ class Wholesome(commands.Cog, name="Wholesome"):
         logs.info(f"give_hug - {interaction.user.name} sent a hug to {user.name}")
     
     # send headpat {user}
-    @group.command(name="headpat", description="Gives the user a headpat")
+    @group_send.command(name="headpat", description="Gives the user a headpat")
     async def headpat(self, interaction:discord.Interaction, 
         user:discord.Member, hidden:typing.Optional[bool] = True):
     

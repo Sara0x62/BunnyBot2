@@ -13,7 +13,7 @@ logs.name = "BunnyBot.commands.Colors"
 logs.setLevel(logging.INFO)
 
 class Colors(commands.Cog, name="Colors"):
-    
+
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
         
@@ -25,11 +25,12 @@ class Colors(commands.Cog, name="Colors"):
         self.ROLES_AT_TOP = True
         
         logs.info("Colors ready.")
-    
+
+
     # Define group command 'color'
     group = app_commands.Group(name="color", description="Color role commands")
-    
-      
+
+
     # color set - rgb values
     @group.command(name='set-rgb', description='Set a display color for yourself using rgb values')
     async def set_rgb(self, interaction: discord.Interaction, r: app_commands.Range[int, 0, 255], g: app_commands.Range[int, 0, 255], b: app_commands.Range[int, 0, 255]):
@@ -44,7 +45,8 @@ class Colors(commands.Cog, name="Colors"):
         
         logs.info(f"set_rgb - color set for user: {interaction.user.name}")
         await interaction.followup.send("Color set!")
-        
+
+
     # color set - hex values
     @group.command(name='set-hex', description='Set a display color for yourself using a hex value')
     async def set_hex(self, interaction: discord.Interaction, hex_code:str):
@@ -56,14 +58,14 @@ class Colors(commands.Cog, name="Colors"):
             await interaction.response.defer(ephemeral=True)
             
             await self.set_color(color=color, user=interaction.user, guild=interaction.guild)
-
+            
             await interaction.followup.send("Color set!")
             
         except ValueError:
             logs.info(f"set_hex - ValueError: {interaction.user.name} hex value: {hex_code}")
             await interaction.response.send_message("Unable to convert given hex to color", ephemeral=True)
-    
-    
+
+
     # color show
     @group.command(name='show', description='Shows the color values of yourself or someone else')
     async def show(self, interaction: discord.Interaction, target: typing.Optional[discord.Member]):
@@ -88,8 +90,8 @@ class Colors(commands.Cog, name="Colors"):
         else:
             logs.info(f"show - No color role found for {username}")
             await interaction.response.send_message(f"Did not find a color role on {username}", ephemeral=True)
-    
-    
+
+
     # color steal
     @group.command(name='steal', description='Steal the display color of someone else')
     async def steal(self, interaction: discord.Interaction, target: discord.Member):
@@ -116,12 +118,14 @@ class Colors(commands.Cog, name="Colors"):
             await interaction.followup.send(f"Successfully stole colors from {target.name}", ephemeral=False)
         
         logs.info(f"steal - Successfully stolen colors from {target.name}")
-    
+
+
         """
             === ^ COLOR COMMANDS UP ^ ===
             
             ====== COLOR HANDLERS  ======
         """
+
     # Tries to set the role color, makes it if role does not exist
     async def set_color(self, color: discord.Color, user: discord.Member, guild: discord.Guild):
         
@@ -133,7 +137,7 @@ class Colors(commands.Cog, name="Colors"):
         
         if color_role:
             logs.info(f"set_color - Got color role for {user.name} - setting color to [R: {color.r}, G: {color.g}, B: {color.b}]")
-
+            
             await color_role.edit(color=color)
             
             return
@@ -159,8 +163,8 @@ class Colors(commands.Cog, name="Colors"):
             # Add role to user
             logs.info(f"set_color - Adding new role to user: {user.name}")
             await user.add_roles(color_role)
-            
-    
+
+
     # Searches user roles for role:str and returns it as a discord.Role object
     # Returns None if role is not found
     async def get_role(self, user: discord.Member, user_role: str = None) -> discord.Role:
@@ -176,7 +180,7 @@ class Colors(commands.Cog, name="Colors"):
             
         logs.info(f"get_role - no role found for user: {user.name}")
         return None
-    
-    
+
+
 async def setup(bot: commands.Bot):
     await bot.add_cog(Colors(bot))
