@@ -23,8 +23,6 @@ class Wholesome(commands.Cog, name="Wholesome"):
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
         
-        self.hug_emote = emote_cfg['EMOJIS']['hugs']
-        
         logs.info("Wholesome ready.")
     
     # Command groups
@@ -82,7 +80,7 @@ class Wholesome(commands.Cog, name="Wholesome"):
     async def give_hug(self, interaction:discord.Interaction, 
         user:discord.Member, hidden:typing.Optional[bool]=True):
         
-        emote = self.hug_emote
+        emote = emote_cfg['EMOJIS']['hugs']
             
         await interaction.response.send_message(f"Sending {user.name} a hug", ephemeral=hidden)
         
@@ -94,12 +92,9 @@ class Wholesome(commands.Cog, name="Wholesome"):
     @group_send.command(name="headpat", description="Gives the user a headpat")
     async def headpat(self, interaction:discord.Interaction, 
         user:discord.Member, hidden:typing.Optional[bool] = True):
-    
-        emote = discord.utils.get(interaction.guild.emojis, name='headpats')
-        if emote is None:
-            logs.info("headpat - No headpat emoji found, setting empty string.")
-            emote = ""
-            
+        
+        emote = emote_cfg['EMOJIS']['headpats']
+        
         await interaction.response.send_message(f"Sending headpats to {user.name}", ephemeral=hidden)
         
         await interaction.channel.send(f"*headpats* {user.mention} {emote}")

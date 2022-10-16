@@ -40,6 +40,24 @@ class Owner(commands.Cog, name="Owner"):
 
 
     @commands.command()
+    @commands.guild_only()
+    @commands.is_owner()
+    async def add_emote(self, ctx: commands.Context, emote_name: str, emote: discord.Emoji):
+        logs.info("Adding emote to config - emote")
+        
+        emote_syntax = f"<:{emote.name}:{emote.id}>"
+        
+        emote_cfg.set('EMOJIS', emote_name, emote_syntax)
+        
+        with open('emojis.ini', 'w') as f:
+            emote_cfg.write(f)
+        
+        await ctx.send(f"Added emote '{emote_name} - {emote_syntax} to config, restart required for emotes to be updated across Cogs.")
+
+    """
+        Extension handling - list all extensions, reload given extensions
+    """
+    @commands.command()
     @commands.is_owner()
     async def extensions(self, ctx: commands.Context):
         # Lists all current extensions
@@ -115,8 +133,8 @@ class Owner(commands.Cog, name="Owner"):
                 ret += 1
                 
         await ctx.send(f"Synced the tree to {ret}/{len(guilds)}")
-    
-    
+
+
     @commands.Cog.listener("on_command_error")
     async def owner_error(self, ctx, error):
         if isinstance(error, commands.NotOwner):
