@@ -1,3 +1,6 @@
+# mport tracemalloc
+# tracemalloc.start()
+
 import logging
 import configparser
 import os
@@ -66,3 +69,11 @@ bot.activity = discord.Activity(type=discord.ActivityType.watching, name="all th
 # Run bot
 bot.run(secret)
 
+"""
+snapshot = tracemalloc.take_snapshot()
+top_stats = snapshot.statistics('lineno')
+
+print("[ TOP 10 ]")
+for stat in top_stats[:10]:
+    print(f"{stat.traceback}\n\tCount: {stat.count}\n\tSize: {stat.size}\n")
+"""

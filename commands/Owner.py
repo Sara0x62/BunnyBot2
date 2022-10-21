@@ -135,18 +135,5 @@ class Owner(commands.Cog, name="Owner"):
         await ctx.send(f"Synced the tree to {ret}/{len(guilds)}")
 
 
-    @commands.Cog.listener("on_command_error")
-    async def owner_error(self, ctx, error):
-        if isinstance(error, commands.NotOwner):
-            logs.warning(f"owner_error - {ctx.author} - error: {error}")
-            
-            file = discord.File(path.join("gifs", "supervisor.gif"))
-            
-            await ctx.send(file=file)
-        else:
-            logs.error("owner_error - Unknown error caught - {error}")
-            raise error
-
-
 async def setup(bot:commands.Bot):
     await bot.add_cog(Owner(bot))
