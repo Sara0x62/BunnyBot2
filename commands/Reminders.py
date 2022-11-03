@@ -73,7 +73,8 @@ class Reminders(commands.Cog, name="Reminders"):
         await channel.send(f"Hello {user.mention} you wanted me to remind you! You gave me this message:\n {message}")
         
         # Update the row we just completed to set the reminder we just finished as completed
-        await self.db.execute(f"UPDATE reminders SET Completed = true WHERE id = ?", row[0])
+        # logs.info(f"DEBUG - row[0] = {row[0]} | Type: {type(row[0])}")
+        await self.db.execute("UPDATE reminders SET Completed = true WHERE id = ?", (row[0],))
         
         # Uncomment if we want to delete the reminder from the db after completion
         # await self.db.execute(f"DELETE FROM reminders WHERE id = ?", row[0])   # Delete after completion?
