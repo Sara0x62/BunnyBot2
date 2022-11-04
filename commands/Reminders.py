@@ -24,11 +24,25 @@ class Reminders(commands.Cog, name="Reminders"):
         self.db = None
         
         self.time_format = "%Y-%m-%d %H:%M:%S"
+        
     
+    @commands.Cog.listener()
+    async def on_ready(self):
+        if not self.db_connected:
+            await self.connect_db()
+        
+        logs.info("Starting Reminders task")
+        # If the task is already running -> restart it, incase our reminder is the earliest one on the database; else start up the task
+        if self.remindme_task.is_running():
+            self.remindme_task.restart()
+        else:
+            self.remindme_task.start()
     
     async def connect_db(self):
         self.db = await aiosqlite.connect('dbs/BunnyBot.db')
         self.db_connected = True
+        
+        logs.info("Connected to database.")
     
     
     @tasks.loop()
